@@ -1,9 +1,10 @@
 import React from 'react'
+import QuestionCat1 from './QuestionCat1'
 
 const Home = () => {
   return (
     <div>
-      this is Home
+       <QuestionCat1/>
     </div>
   )
 }
