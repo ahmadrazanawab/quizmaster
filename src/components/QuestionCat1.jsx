@@ -14,7 +14,7 @@ const QuestionCat1 = () => {
         { id: 5, name: 'cate5' },
     ]
     return (
-      <div className='flex md:mx-20 mx-8 border-l-8 border-sky-400'>
+    <div className='flex md:mx-20 mx-8 border-l-8 border-sky-400'>
     <div className='shadow-sm w-[100%] bg-slate-50 pt-24 bt-10'>
           <div className='shadow-sm border-b-2 border-gray-600 flex mx-10 justify-between py-4'>
               <p className='text-xl cursor-pointer mx-4'>Untitle Quiz</p>
