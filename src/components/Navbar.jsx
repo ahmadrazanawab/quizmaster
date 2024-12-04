@@ -10,7 +10,7 @@ const Navbar = () => {
         { id: 1, name: "Home", to: '/' },
         { id: 2, name: "About", to: '/about' },
         { id: 3, name: "Q&A", to: '/' },
-        { id: 3, name: "Question3",to:'/'},
+        { id: 4, name: "Question3",to:'/'},
     ]
   return (
     <nav className="bg-[#ddd] fixed shadow-md py-4  md:py-0  w-full items-center   md:flex flex justify-between">

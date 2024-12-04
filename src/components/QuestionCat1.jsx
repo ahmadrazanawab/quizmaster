@@ -1,21 +1,68 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { CiImageOn } from "react-icons/ci";
-import { IoIosClose } from "react-icons/io";
 import { MdAdd } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import context from '../context/context';
+import { FaPen } from "react-icons/fa";
+import { BiSave } from "react-icons/bi";
+import { CiSaveDown1 } from "react-icons/ci";
+import { RiDeleteBinLine } from "react-icons/ri";
 
 
 const QuestionCat1 = () => {
-    const { inputsCategory,inputsAns,handleInputChangeCategory,handleInputChangeAns,handleDeleteCategory,handleDeleteAnswer} = useContext(context);
-    const drowdownName = [
-        { id: 1, name: 'cate1' },
-        { id: 2, name: 'cate2' },
-        { id: 3, name: 'cate3' },
-        { id: 4, name: 'cate4' },
-        { id: 5, name: 'cate5' },
-    ]
+    const [isActive, setIsActive] = useState(false);
+    const [isActives, setIsActives] = useState(false);
+    const [category, setCategory] = useState('');
+    const [cateId, setCateId] = useState('');
+    const [answerItem, setAnswerItem] = useState('');
+    const [ansId, setAnsId] = useState('');
+    const { noteCategory,addCategory,updateCategory,deleteCategory,noteAnswer,addAnswer,updateAnswerNote,deleteAnswer} = useContext(context);
+    
+    // Start Category Question Crud
+    const handleAddCategory = (e) => {
+        e.preventDefault();
+        addCategory(category)
+        setCategory('');
+    }
+
+    const handleEditCategory = (cate) => {
+        setCateId(cate.id);
+        setCategory(cate.category);
+    }
+
+    const handleUpdateCategory = (e) => {
+        e.preventDefault();
+        updateCategory(cateId,category);
+        setCateId(null);
+        setIsActive(false);
+        setCategory('');
+    }
+    //  End Category Question Crud
+    
+
+      // Start Answer Item Crud
+      const handleAddAsnwer = (e) => {
+        e.preventDefault();
+        addAnswer(answerItem);
+        setAnswerItem('');
+    }
+
+    const handleEditAnswer = (ans) => {
+        setAnsId(ans.id);
+        setAnswerItem(ans.answer);
+    }
+
+    const handleUpdateAnswer = (e) => {
+        e.preventDefault();
+        updateAnswerNote(ansId,answerItem);
+        setAnsId(null);
+        setIsActives(false);
+        setAnswerItem('');
+    }
+//  End Category Question Crud
+   
+
     return (
     <div className='flex md:mx-20 mx-8 border-l-8 border-sky-400'>
     <div className='shadow-sm w-[100%] bg-slate-50 pt-24 bt-10'>
@@ -37,32 +84,42 @@ const QuestionCat1 = () => {
           </div>
           <div className='bg-slate-50 my-4'>
               <h4 className='text-md font-serif mx-10'>Categories</h4>
-              <div className='flex flex-col mx-10 my-1'>
-                  {
-                            inputsCategory.map((cate) => (
-                                <label htmlFor="cat1" key={cate.id} className='flex items-center'>
-                                    <input type="text" value={cate.value} onChange={(e) => handleInputChangeCategory(cate.id, e.target.value)}
-                                        className='bg-white md:w-[30%] w-full  border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`category ${cate.id + 1}`} />
-                                    <IoIosClose onClick={() => { handleDeleteCategory(cate.id) }} className={`cursor-pointer ${cate.id === 1 ? 'hidden':""} `} size={30} />
-                                </label>
-                       ))     
-                  }
-              </div>
+              <div className='flex flex-col mx-10 my-1'>  
+                <label htmlFor="cat1" className='flex items-center'>
+                <input type="text" value={category} onChange={(e)=>(setCategory(e.target.value))}
+                className='bg-white md:w-[30%] w-full  border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`Enter Category`} />
+                            {isActive ?<CiSaveDown1 onClick={handleUpdateCategory} className=' cursor-pointer ' size={25} />
+                                : < BiSave onClick={handleAddCategory} className=' cursor-pointer ' size={25} />}
+                            
+                </label>
+
+                    </div> { noteCategory.map((cate) =>
+                    (<div key={cate.id} className='mx-11 my-2 flex items-center justify-between rounded px-2 py-1 border-[1px] border-gray-900 w-[20%]'>
+                        <h4 className='mr-1 text-xl font-serif'>{cate.category}</h4>
+                        <span className='ml-1 flex items-center cursor-pointer'>
+                            <FaPen onClick={() => { handleEditCategory(cate),setIsActive(true)}} className='mx-1' />
+                            <RiDeleteBinLine onClick={() => { deleteCategory(cate.id) }} size={25} className='mx-1' />
+                    </span></div>))}
           </div>
           <div className='flex md:flex-row flex-col my-4'>
               <div className=''>
                   <h4 className='mx-11'>item</h4>
                   <div className='flex flex-col mx-10'>
-                      {
-                               inputsAns.map((ans) => (
-                                    <label htmlFor="cat1" key={ans.AnsId} className='flex items-center'>
-                                            <input type="text" value={ans.AnsValue} onChange={(e) => handleInputChangeAns(ans.AnsId, e.target.value)}
-                                            className='bg-white w-full border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`ans ${ans.AnsId + 1}`} />
-                                       <IoIosClose onClick={() => { handleDeleteAnswer(ans.AnsId) }} className={`cursor-pointer ${ans.AnsId === 1 ? 'hidden':""} `} size={30} />
-                                    </label>
-                          ))      
-                                
-                      }      
+                        <label htmlFor="cat1" className='flex items-center'>
+                         <input type="text"   value={answerItem} onChange={(e)=>{setAnswerItem(e.target.value)}}
+                          className='bg-white w-full border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`answer`} />
+                           {isActives ?<CiSaveDown1 onClick={handleUpdateAnswer} className=' cursor-pointer ' size={25} />
+                                : < BiSave onClick={handleAddAsnwer} className=' cursor-pointer ' size={25} />}
+                            
+                          </label>
+                
+                       { noteAnswer.map((ans) =>
+                    (<div key={ans.id} className='mx-1 my-2 shadow-sm bg-white  flex items-start justify-between rounded px-2 py-1 border-[1px] border-gray-900 w-full max-w-[300px]'>
+                        <h4 className='mr-1 font-serif'>{ans.answer}</h4>
+                        <span className='ml-1 flex items-center cursor-pointer'>
+                            <FaPen onClick={() => { handleEditAnswer(ans),setIsActives(true)}} className='mx-1 my-1' />
+                            <RiDeleteBinLine onClick={() => { deleteAnswer(ans.id) }} size={25} className='mx-1 my-1' />
+                    </span></div>))}     
                 </div>
               </div>
               <div>
@@ -70,15 +127,15 @@ const QuestionCat1 = () => {
                    <div className='flex flex-col mx-10'>
                         <select name="cate"  className='text-gry-900 cursor-pointer w-[200px] border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' id="cate">
                                 {
-                                    drowdownName.map(({ id, name })=>(
-                                        <option  key={id} value={id}>{name}</option>
+                                   noteCategory.map((cate)=>(
+                                        <option key={cate.category} value={cate.category}>{cate.category}</option>
                                     ))
                                 }
                         </select>     
                             <select name="cate" className='text-gray-900 cursor-pointer w-[200px] border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' id="cate">
                                 {
-                                    drowdownName.map(({ id, name })=>(
-                                        <option  className='' key={id} value={id}>{name}</option>
+                                    noteCategory.map((cate)=>(
+                                        <option  className='' key={cate.id} value={cate.id}>{cate.category}</option>
                                     ))
                                 }
                             </select>     

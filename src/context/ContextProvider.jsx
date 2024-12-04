@@ -1,65 +1,65 @@
 import React, { useState } from 'react'
 import Context from './context'
+import { v4 as uuidv4 } from 'uuid';
 const contextProvider = ({ children }) => {
-    const [inputsCategory, setInputsCategory] = useState([{ id: 1, value: "" }]);
-    const [inputsAns, setInputsAns] = useState([{ AnsId: 1, AnsValue: "" }]);
-    const [nextId, setNextId] = useState(2);
+    const [noteCategory, setNoteCategory] = useState([]);
+    const [noteAnswer, setNoteAnswer] = useState([]);
 
-    // Start Add Category Input
-    const handleInputChangeCategory = (id, value) => {
-        setInputsCategory((prevInputs) =>
-          prevInputs.map((input) =>
-              input.id === id ? { ...input, value } : input
-          )
-        );
-        console.log(id);
-        if (inputsCategory[inputsCategory.length - 1].id === id && value.trim() !== "") {
-            setInputsCategory([...inputsCategory, { id: nextId, value: "" }]);
-            setNextId((prev) => prev + 1); 
+    //start category crud function
+    // add Category
+    const addCategory = (category) => {
+        const addCate = {
+            id: uuidv4(),
+            category,
         }
-      };
-    
-    // End Add Category Input
-
-    // Start Add Asnwer Input
-    const handleInputChangeAns = (AnsId,AnsValue) => {
-        // const updatedInputs = [...inputsAns];
-        // updatedInputs[index] = value; 
-        // setInputsAns(updatedInputs);
-    
-        // if (index === inputsAns.length - 1 && value.trim() !== "") {
-        //     setInputsAns([...updatedInputs, ""]); 
-        // }
-        console.log(AnsId);
-        setInputsAns((prevInputAns) => (
-            prevInputAns.map((input) => (
-                input.AnsId === AnsId ? { ...input, AnsValue } : input
-            ))
-        ));
-        
-        if (inputsAns[inputsAns.length - 1].AnsId === AnsId && AnsValue.trim() !== "") {
-            setInputsAns([...inputsAns, { AnsId: nextId, AnsValue: '' }]);
-            setNextId((prev) => prev + 1);
-        }
-
-    };
-
-    // End Add Answer input
-
-    // Delete Category input field
-    const handleDeleteCategory = (id) => {
-        const del = setInputsCategory((prevInputs) => prevInputs.filter((input) => input.id !== id));
-        console.log(del);
-    };
-
-    // Delete Answer input field
-    const handleDeleteAnswer = (AnsId) => {
-        const del = setInputsAns((prevInputs) => prevInputs.filter((input) => input.AnsId !== AnsId));
-        console.log(del);
+        setNoteCategory([...noteCategory, addCate]);
+        console.log(addCate);
     }
-    
+
+    // delete category
+    const deleteCategory = (id) => {
+        const deleteCategory = noteCategory.filter((cate) => {return cate.id !== id });
+        setNoteCategory(deleteCategory);
+        console.log(deleteCategory);
+    }
+
+    // update category
+    const updateCategory = (id,category) => {
+        setNoteCategory(noteCategory.map(cate => (cate.id === id ? { ...cate, category } : cate)))
+    }
+
+    // End category crud function
+
+
+
+    //start Answer Note crud function
+
+    // add Answer note
+    const addAnswer = (answer) => {
+        const addAns = {
+            id: uuidv4(),
+            answer,
+        }
+        setNoteAnswer([...noteAnswer, addAns ]);
+        console.log(addAns);
+    }
+
+    // delete answer note
+    const deleteAnswer = (id) => {
+        const deleteAnswer = noteAnswer.filter((ans) => {return ans.id !== id });
+        setNoteAnswer(deleteAnswer);
+        console.log(deleteAnswer);
+    }
+
+    // update answer note
+    const updateAnswerNote = (id,answer) => {
+        setNoteAnswer(noteAnswer.map(ans => (ans.id === id ? { ...ans, answer } : ans)))
+    }
+
+    //End Answer Note crud function
+
   return (
-    <Context.Provider value={{inputsCategory,inputsAns,handleInputChangeCategory,handleInputChangeAns,handleDeleteCategory,handleDeleteAnswer}}>
+    <Context.Provider value={{noteCategory,updateCategory,addCategory,deleteCategory,noteAnswer,addAnswer,updateAnswerNote,deleteAnswer}}>
       {children}
     </Context.Provider>
   )
