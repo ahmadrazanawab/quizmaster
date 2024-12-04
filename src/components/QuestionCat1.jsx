@@ -1,11 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { CiImageOn } from "react-icons/ci";
 import { IoIosClose } from "react-icons/io";
 import { MdAdd } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import context from '../context/context';
+
 
 const QuestionCat1 = () => {
+    const { inputsCategory,inputsAns,handleInputChangeCategory,handleInputChangeAns,handleDeleteCategory,handleDeleteAnswer} = useContext(context);
     const drowdownName = [
         { id: 1, name: 'cate1' },
         { id: 2, name: 'cate2' },
@@ -35,16 +38,31 @@ const QuestionCat1 = () => {
           <div className='bg-slate-50 my-4'>
               <h4 className='text-md font-serif mx-10'>Categories</h4>
               <div className='flex flex-col mx-10 my-1'>
-                  <label htmlFor="cat1" className='flex items-center'><input type="text" className='bg-white md:w-[30%] w-full  border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder='cat1'/><IoIosClose className=' cursor-pointer ' size={30} /></label>
-                  <label htmlFor="cat2" className='flex items-center'><input type="text" className='bg-white md:w-[30%] w-full border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat2" id="" placeholder='cat2'/><IoIosClose className=' cursor-pointer ' size={30} /></label>
+                  {
+                            inputsCategory.map((cate) => (
+                                <label htmlFor="cat1" key={cate.id} className='flex items-center'>
+                                    <input type="text" value={cate.value} onChange={(e) => handleInputChangeCategory(cate.id, e.target.value)}
+                                        className='bg-white md:w-[30%] w-full  border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`category ${cate.id + 1}`} />
+                                    <IoIosClose onClick={() => { handleDeleteCategory(cate.id) }} className={`cursor-pointer ${cate.id === 1 ? 'hidden':""} `} size={30} />
+                                </label>
+                       ))     
+                  }
               </div>
           </div>
           <div className='flex md:flex-row flex-col my-4'>
               <div className=''>
                   <h4 className='mx-11'>item</h4>
                   <div className='flex flex-col mx-10'>
-                    <label htmlFor="cat1" className='flex items-center'><input type="text" className='bg-white w-full border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder='ans1'/><IoIosClose className=' cursor-pointer ' size={30} /></label>
-                    <label htmlFor="cat2" className='flex items-center'><input type="text" className='bg-white w-full border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat2" id="" placeholder='ans2'/><IoIosClose className=' cursor-pointer ' size={30} /></label>
+                      {
+                               inputsAns.map((ans) => (
+                                    <label htmlFor="cat1" key={ans.AnsId} className='flex items-center'>
+                                            <input type="text" value={ans.AnsValue} onChange={(e) => handleInputChangeAns(ans.AnsId, e.target.value)}
+                                            className='bg-white w-full border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`ans ${ans.AnsId + 1}`} />
+                                       <IoIosClose onClick={() => { handleDeleteAnswer(ans.AnsId) }} className={`cursor-pointer ${ans.AnsId === 1 ? 'hidden':""} `} size={30} />
+                                    </label>
+                          ))      
+                                
+                      }      
                 </div>
               </div>
               <div>
