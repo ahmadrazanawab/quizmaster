@@ -81,7 +81,8 @@ const QuestionCat1 = () => {
   };
   //  End Category Question Crud
 
-  return (
+    return (
+      <>
     <div className='flex md:mx-20 mx-8 border-l-8 border-sky-400'>
     <div className='shadow-sm w-[100%] bg-slate-50 pt-24 bt-10'>
           <div className='shadow-sm border-b-2 border-gray-600 flex mx-10 justify-between py-4'>
@@ -99,7 +100,9 @@ const QuestionCat1 = () => {
                     <label htmlFor="img"> <input type="file" className='hidden' name="txt,png,pdf,jpn" id="img" /> <CiImageOn className='cursor-pointer ' id='img' size={25}/></label>
                   </div> 
               </div>
-          </div>
+            </div>
+                    
+                    {/* Start  Category Section */}
               <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId="droppable">
                       {(provided) => (
@@ -133,9 +136,16 @@ const QuestionCat1 = () => {
                           </div>
                       )}
                   </Droppable>
-            </DragDropContext>    
-          <div className='flex md:flex-row flex-col my-4'>
-              <div className=''>
+                    </DragDropContext>  
+                    {/* End Category Section */}
+
+
+                    {/* Start Answer Item Section */}
+              <div className='flex md:flex-row flex-col min-h-[300px] my-4'>
+                    <DragDropContext onDragEnd={handleDragEndAns}>
+                        <Droppable droppableId="droppable">
+                        {(provided) => (
+                  <div className='' {...provided.droppableProps} ref={provided.innerRef}>
                   <h4 className='mx-11'>item</h4>
                   <div className='flex flex-col mx-10'>
                         <label htmlFor="cat1" className='flex items-center'>
@@ -143,18 +153,31 @@ const QuestionCat1 = () => {
                           className='bg-white w-full border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`answer`} />
                            {isActives ?<MdFileDownloadDone onClick={handleUpdateAnswer} className=' cursor-pointer ' size={25} />
                                 : <MdAddToPhotos onClick={handleAddAsnwer} className=' cursor-pointer ' size={25} />}
-                            
                           </label>
                 
-                       { noteAnswer.map((ans) =>
-                    (<div key={ans.id} className='mx-1 my-2 shadow-sm bg-white  flex items-start justify-between rounded px-2 py-1 border-[1px] border-gray-900 w-full max-w-[300px]'>
-                        <h4 className='mr-1 my-1 font-serif'>{ans.answer}</h4>
+                       { noteAnswer.map((ans,index) =>
+                    (<Draggable key={ans.id} draggableId={ans.id} index={index}>
+                           {(provided) => (
+                            <div ref={provided.innerRef} 
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps} 
+                            className='mx-1 my-2 shadow-sm bg-white  flex items-start justify-between rounded px-2 py-1 border-[1px] border-gray-900 w-full max-w-[300px]'  
+                            ><h4 className='mr-1 my-1 font-serif'>{ans.answer}</h4>
                         <span className='ml-1 flex items-center cursor-pointer'>
                                <FaPen onClick={() => { handleEditAnswer(ans), setIsActives(true) }} className={`mx-1 my-1`} />
                                <RiDeleteBinLine onClick={() => { deleteAnswer(ans.id) }} size={25} className={`mx-1 my-1`} />
-                    </span></div>))}     
-                </div>
-              </div>
+                           </span>
+                            </div>)}
+                       </Draggable>))}  
+                          
+                </div>     
+            </div>     
+                  )}
+                  </Droppable>                        
+               </DragDropContext>
+
+                    
+              <DragDropContext>
               <div>
                   <h4 className='mx-11'>belongs To</h4>
                    <div className='flex flex-col mx-10'>
@@ -173,7 +196,9 @@ const QuestionCat1 = () => {
                                 }
                             </select>     
                     </div>
-              </div>
+                               
+              </div>                
+              </DragDropContext>
           </div>
         </div>
             <div className='flex flex-col items-center pt-24 mx-2'>
@@ -181,8 +206,9 @@ const QuestionCat1 = () => {
                 <FaRegCopy className="my-2 cursor-pointer" size={25}/>
                 <RiDeleteBin5Line className='my-2 cursor-pointer ' size={25} />
             </div>
-    </div>
+            </div>
+            </>
   );
 };
 
-export default QuestionCat1;
+export default QuestionCat1
