@@ -1,12 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { CiImageOn } from "react-icons/ci";
-import { IoIosClose } from "react-icons/io";
+import { GrChapterAdd } from "react-icons/gr";
 import { MdAdd } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { BsQuestionCircle } from "react-icons/bs";
 
 const QuestionCate2 = () => {
+  const [inputText, setInputText] = useState('');
+  const [selectedWord, setSelectedWord] = useState('');
+  const [fields, setFields] = useState([{ id: 1, value: '' }]); // Initial set of input fields and checkboxes
+
+  // Function to get the selected text
+  const getSelectedText = () => {
+    const inputElement = document.getElementById('textInput');
+    const start = inputElement.selectionStart;
+    const end = inputElement.selectionEnd;
+    const selected = inputElement.value.substring(start, end);
+    setSelectedWord(selected);
+  };
+
+  // Handle checkbox click for a specific field
+  const handleCheckboxClick = (id) => {
+    setFields((prevFields) =>
+      prevFields.map((field) =>
+        field.id === id ? { ...field, value: selectedWord } : field
+      )
+    );
+  };
+
+  // Add a new field
+  const addField = () => {
+    setFields([...fields, { id: fields.length + 1, value: '' }]);
+  };
+
   return (
     <div className='flex md:mx-20 mx-8 border-l-8 my-10  border-sky-400'>
     <div className='shadow-sm w-[100%] bg-slate-50 pt-4 pb-14'>
@@ -34,13 +61,21 @@ const QuestionCate2 = () => {
               <div>
                   <label htmlFor="question2" className='mx-2'>Sentance <span className='text-red-500'>*</span></label>
                   <div className=''>
-                  <textarea name="question2" id="question2" cols="2" className='mx-2 w-[60%] h-16 outline-none shadow-sm rounded px-2 py-1' placeholder='A quick brown fox jumped over a fence' rows="2"></textarea>
+                          <textarea value={inputText} onChange={(e) => setInputText(e.target.value)} onMouseUp={getSelectedText}
+                              name="question2" id="textInput" cols="2" className='mx-2 w-[60%] h-16 outline-none shadow-sm rounded px-2 py-1' placeholder='A quick brown fox jumped over a fence' rows="2">
+                          </textarea>
+                          <label htmlFor="addfield" className='flex ml-5 cursor-pointer items-center justify-between max-w-[120px]  my-2 mx-2 border-[1px] border-gray-900 rounded px-2 py-1'>
+                              <h4 id='addfield'>Add field</h4><span><GrChapterAdd onClick={addField} id='addfield' size={20} /></span>
+                          </label>
                   </div> 
               </div>
               </div>
               <div className='flex flex-col md:mx-10 mx-2'>
-                  <label htmlFor="color1" className='flex'><input type="checkbox" className='' name="" id="" /><input type="text" className='md:px-4 px-2  py-1 shadow-sm border-[1px] border-[#333] rounded mx-2 my-1 outline-none' name="clr" id="" placeholder='brown' /></label>
-                  <label htmlFor="color2"><input type="checkbox" name="" id="" /><input type="text" className='md:px-4 px-2 py-1 shadow-sm border-[1px] border-[#333] rounded mx-2 my-1 outline-none' name="clr" id="" placeholder='fence' /></label>
+                  {fields.map((field)=>(<label key={field.id} htmlFor="color1" className='flex'>
+                      <input type="checkbox" onClick={() => handleCheckboxClick(field.id)} className='' name="" id="" />
+                      <input type="text" value={field.value} readOnly
+                          className='md:px-4 px-2  py-1 shadow-sm border-[1px] border-[#333] rounded mx-2 my-1 outline-none' name="clr" id="" placeholder={`Field ${field.id}`} />
+                  </label>))}
               </div>
         </div>
             <div className='flex flex-col items-center pt-10 mx-2'>

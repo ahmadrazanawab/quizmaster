@@ -17,10 +17,10 @@ const App = () => {
             path: '/about',
             element:<><Navbar/><About/></>
         },
-        // {
-        //     path: '/cate3',
-        //     element:<><Navbar/><QuestionCat3/></>
-        // },
+        {
+            path: '/cate3',
+            element:<><Navbar/><QuestionCat3/></>
+        },
     ])
   return (
       <div>

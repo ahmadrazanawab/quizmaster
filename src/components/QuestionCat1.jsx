@@ -115,10 +115,10 @@ const QuestionCat1 = () => {
                 
                        { noteAnswer.map((ans) =>
                     (<div key={ans.id} className='mx-1 my-2 shadow-sm bg-white  flex items-start justify-between rounded px-2 py-1 border-[1px] border-gray-900 w-full max-w-[300px]'>
-                        <h4 className='mr-1 font-serif'>{ans.answer}</h4>
+                        <h4 className='mr-1 my-1 font-serif'>{ans.answer}</h4>
                         <span className='ml-1 flex items-center cursor-pointer'>
-                            <FaPen onClick={() => { handleEditAnswer(ans),setIsActives(true)}} className='mx-1 my-1' />
-                            <RiDeleteBinLine onClick={() => { deleteAnswer(ans.id) }} size={25} className='mx-1 my-1' />
+                               <FaPen onClick={() => { handleEditAnswer(ans), setIsActives(true) }} className={`mx-1 my-1`} />
+                               <RiDeleteBinLine onClick={() => { deleteAnswer(ans.id) }} size={25} className={`mx-1 my-1`} />
                     </span></div>))}     
                 </div>
               </div>
