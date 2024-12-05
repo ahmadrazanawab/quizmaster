@@ -1,69 +1,49 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { DragDropContext } from 'react-beautiful-dnd'
 
 const QuestionCat3 = () => {
-  const [inputText, setInputText] = useState('');
-  const [selectedWord, setSelectedWord] = useState('');
-  const [fields, setFields] = useState([{ id: 1, value: '' }]); // Initial set of input fields and checkboxes
-
-  // Function to get the selected text
-  const getSelectedText = () => {
-    const inputElement = document.getElementById('textInput');
-    const start = inputElement.selectionStart;
-    const end = inputElement.selectionEnd;
-    const selected = inputElement.value.substring(start, end);
-    setSelectedWord(selected);
-  };
-
-  // Handle checkbox click for a specific field
-  const handleCheckboxClick = (id) => {
-    setFields((prevFields) =>
-      prevFields.map((field) =>
-        field.id === id ? { ...field, value: selectedWord } : field
-      )
-    );
-  };
-
-  // Add a new field
-  const addField = () => {
-    setFields([...fields, { id: fields.length + 1, value: '' }]);
-  };
-
+    const itemList = [
+        {
+            id:1,
+            title: 'this is title one',
+            description:"this is description one"
+        },
+        {
+            id:2,
+            title: 'this is title one',
+            description:"this is description one"
+        },
+        {
+            id:3,
+            title: 'this is title one',
+            description:"this is description one"
+        },
+        {
+            id:4,
+            title: 'this is title one',
+            description:"this is description one"
+        },
+        {
+            id:5,
+            title: 'this is title one',
+            description:"this is description one"
+        },
+        
+    ]
   return (
-      <div className='bg-slate-300 pt-24 pb-10 px-10'>
-         <div>
-      <h1>Dynamic Text Selector</h1>
-      <textarea
-        id="textInput"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-        onMouseUp={getSelectedText} // Capture selected text on mouse release
-        placeholder="Write something and select a word..."
-        rows={5}
-        cols={30}
-      />
-      <br />
-      <button onClick={addField}>Add Field</button>
-      <div>
-        {fields.map((field) => (
-          <div key={field.id} style={{ marginTop: '10px' }}>
-            <label>
-              <input
-                type="checkbox"
-                onClick={() => handleCheckboxClick(field.id)}
-              />
-              Copy selected word to Field {field.id}
-            </label>
-            <input
-              type="text"
-              value={field.value}
-              readOnly
-              placeholder={`Field ${field.id}`}
-              style={{ marginLeft: '10px' }}
-            />
-          </div>
-        ))}
-      </div>
-    </div>
+      <div className='bg-slate-200 pt-24 pb-10'>
+          <h4 className='text-2xl font-serif text-center'>Item List</h4>
+          <DragDropContext>
+          <div className='flex justify-center flex-col items-center'>
+              {
+                  itemList.map((item) => (
+                    <div key={item.id} className='flex flex-col my-2 cursor-pointer rounded items-center border-[1px] border-gray-900'>
+                          <h4 className='text-xl my-1 mx-1'>{item.title}</h4>
+                          <p className='text-md my-1 mx-1'>{item.description}</p>
+                   </div>))
+              }
+              </div>
+          </DragDropContext>
     </div>
   )
 }

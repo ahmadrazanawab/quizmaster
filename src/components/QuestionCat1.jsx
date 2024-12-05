@@ -4,10 +4,11 @@ import { MdAdd } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import context from '../context/context';
-import { FaPen } from "react-icons/fa";
-import { BiSave } from "react-icons/bi";
 import { CiSaveDown1 } from "react-icons/ci";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { DragDropContext } from 'react-beautiful-dnd'
+import { MdAddToPhotos } from "react-icons/md";
+import { MdFileDownloadDone } from "react-icons/md";
 
 
 const QuestionCat1 = () => {
@@ -22,7 +23,12 @@ const QuestionCat1 = () => {
     // Start Category Question Crud
     const handleAddCategory = (e) => {
         e.preventDefault();
-        addCategory(category)
+        if (category === "") {
+            alert('Your category is blank. You cannot be add a category');
+        } else {
+            addCategory(category);
+            alert('Your category is added');
+        }
         setCategory('');
     }
 
@@ -43,8 +49,13 @@ const QuestionCat1 = () => {
 
       // Start Answer Item Crud
       const handleAddAsnwer = (e) => {
-        e.preventDefault();
-        addAnswer(answerItem);
+          e.preventDefault();
+          if (answerItem === '') {
+              alert('Your answer is blank. You cannot be add an answer');
+          }
+          else {
+            addAnswer(answerItem);
+          }
         setAnswerItem('');
     }
 
@@ -82,25 +93,27 @@ const QuestionCat1 = () => {
                   </div> 
               </div>
           </div>
+          <DragDropContext>
           <div className='bg-slate-50 my-4'>
               <h4 className='text-md font-serif mx-10'>Categories</h4>
               <div className='flex flex-col mx-10 my-1'>  
                 <label htmlFor="cat1" className='flex items-center'>
                 <input type="text" value={category} onChange={(e)=>(setCategory(e.target.value))}
                 className='bg-white md:w-[30%] w-full  border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`Enter Category`} />
-                            {isActive ?<CiSaveDown1 onClick={handleUpdateCategory} className=' cursor-pointer ' size={25} />
-                                : < BiSave onClick={handleAddCategory} className=' cursor-pointer ' size={25} />}
+                            {isActive ?<MdFileDownloadDone onClick={handleUpdateCategory} className=' cursor-pointer ' size={25} />
+                                : <MdAddToPhotos onClick={handleAddCategory} className=' cursor-pointer ' size={25} />}
                             
                 </label>
-
+                
                     </div> { noteCategory.map((cate) =>
-                    (<div key={cate.id} className='mx-11 my-2 flex items-center justify-between rounded px-2 py-1 border-[1px] border-gray-900 w-[20%]'>
+                    (<div key={cate.id} className='mx-11 my-2 flex items-center justify-between rounded px-2 py-1 border-[1px] border-gray-900  w-[20%]'>
                         <h4 className='mr-1 text-xl font-serif'>{cate.category}</h4>
                         <span className='ml-1 flex items-center cursor-pointer'>
                             <FaPen onClick={() => { handleEditCategory(cate),setIsActive(true)}} className='mx-1' />
                             <RiDeleteBinLine onClick={() => { deleteCategory(cate.id) }} size={25} className='mx-1' />
-                    </span></div>))}
-          </div>
+                        </span></div>))}
+                </div>
+            </DragDropContext>    
           <div className='flex md:flex-row flex-col my-4'>
               <div className=''>
                   <h4 className='mx-11'>item</h4>
@@ -108,8 +121,8 @@ const QuestionCat1 = () => {
                         <label htmlFor="cat1" className='flex items-center'>
                          <input type="text"   value={answerItem} onChange={(e)=>{setAnswerItem(e.target.value)}}
                           className='bg-white w-full border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`answer`} />
-                           {isActives ?<CiSaveDown1 onClick={handleUpdateAnswer} className=' cursor-pointer ' size={25} />
-                                : < BiSave onClick={handleAddAsnwer} className=' cursor-pointer ' size={25} />}
+                           {isActives ?<MdFileDownloadDone onClick={handleUpdateAnswer} className=' cursor-pointer ' size={25} />
+                                : <MdAddToPhotos onClick={handleAddAsnwer} className=' cursor-pointer ' size={25} />}
                             
                           </label>
                 
