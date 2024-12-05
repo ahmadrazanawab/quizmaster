@@ -4,77 +4,84 @@ import { MdAdd } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import context from '../context/context';
-import { CiSaveDown1 } from "react-icons/ci";
+import { FaPen } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { DragDropContext } from 'react-beautiful-dnd'
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MdAddToPhotos } from "react-icons/md";
 import { MdFileDownloadDone } from "react-icons/md";
 
-
 const QuestionCat1 = () => {
-    const [isActive, setIsActive] = useState(false);
-    const [isActives, setIsActives] = useState(false);
-    const [category, setCategory] = useState('');
-    const [cateId, setCateId] = useState('');
-    const [answerItem, setAnswerItem] = useState('');
-    const [ansId, setAnsId] = useState('');
-    const { noteCategory,addCategory,updateCategory,deleteCategory,noteAnswer,addAnswer,updateAnswerNote,deleteAnswer} = useContext(context);
-    
-    // Start Category Question Crud
-    const handleAddCategory = (e) => {
-        e.preventDefault();
-        if (category === "") {
-            alert('Your category is blank. You cannot be add a category');
-        } else {
-            addCategory(category);
-            alert('Your category is added');
-        }
-        setCategory('');
-    }
+  const [isActive, setIsActive] = useState(false);
+  const [isActives, setIsActives] = useState(false);
+  const [category, setCategory] = useState("");
+  const [cateId, setCateId] = useState("");
+  const [answerItem, setAnswerItem] = useState("");
+  const [ansId, setAnsId] = useState("");
+  const {
+    noteCategory,
+    addCategory,
+    updateCategory,
+    deleteCategory,
+    noteAnswer,
+    addAnswer,
+    updateAnswerNote,
+    deleteAnswer,
+    handleDragEnd,
+    handleDragEndAns,
+  } = useContext(context);
 
-    const handleEditCategory = (cate) => {
-        setCateId(cate.id);
-        setCategory(cate.category);
+  // Start Category Question Crud
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    if (category === "") {
+      alert("Your category is blank. You cannot be add a category");
+    } else {
+      addCategory(category);
+      // alert('Your category is added');
     }
+    setCategory("");
+  };
 
-    const handleUpdateCategory = (e) => {
-        e.preventDefault();
-        updateCategory(cateId,category);
-        setCateId(null);
-        setIsActive(false);
-        setCategory('');
+  const handleEditCategory = (cate) => {
+    setCateId(cate.id);
+    setCategory(cate.category);
+  };
+
+  const handleUpdateCategory = (e) => {
+    e.preventDefault();
+    updateCategory(cateId, category);
+    setCateId(null);
+    setIsActive(false);
+    setCategory("");
+  };
+  //  End Category Question Crud
+
+  // Start Answer Item Crud
+  const handleAddAsnwer = (e) => {
+    e.preventDefault();
+    if (answerItem === "") {
+      alert("Your answer is blank. You cannot be add an answer");
+    } else {
+      addAnswer(answerItem);
     }
-    //  End Category Question Crud
-    
+    setAnswerItem("");
+  };
 
-      // Start Answer Item Crud
-      const handleAddAsnwer = (e) => {
-          e.preventDefault();
-          if (answerItem === '') {
-              alert('Your answer is blank. You cannot be add an answer');
-          }
-          else {
-            addAnswer(answerItem);
-          }
-        setAnswerItem('');
-    }
+  const handleEditAnswer = (ans) => {
+    setAnsId(ans.id);
+    setAnswerItem(ans.answer);
+  };
 
-    const handleEditAnswer = (ans) => {
-        setAnsId(ans.id);
-        setAnswerItem(ans.answer);
-    }
+  const handleUpdateAnswer = (e) => {
+    e.preventDefault();
+    updateAnswerNote(ansId, answerItem);
+    setAnsId(null);
+    setIsActives(false);
+    setAnswerItem("");
+  };
+  //  End Category Question Crud
 
-    const handleUpdateAnswer = (e) => {
-        e.preventDefault();
-        updateAnswerNote(ansId,answerItem);
-        setAnsId(null);
-        setIsActives(false);
-        setAnswerItem('');
-    }
-//  End Category Question Crud
-   
-
-    return (
+  return (
     <div className='flex md:mx-20 mx-8 border-l-8 border-sky-400'>
     <div className='shadow-sm w-[100%] bg-slate-50 pt-24 bt-10'>
           <div className='shadow-sm border-b-2 border-gray-600 flex mx-10 justify-between py-4'>
@@ -93,26 +100,39 @@ const QuestionCat1 = () => {
                   </div> 
               </div>
           </div>
-          <DragDropContext>
-          <div className='bg-slate-50 my-4'>
-              <h4 className='text-md font-serif mx-10'>Categories</h4>
-              <div className='flex flex-col mx-10 my-1'>  
-                <label htmlFor="cat1" className='flex items-center'>
-                <input type="text" value={category} onChange={(e)=>(setCategory(e.target.value))}
-                className='bg-white md:w-[30%] w-full  border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`Enter Category`} />
-                            {isActive ?<MdFileDownloadDone onClick={handleUpdateCategory} className=' cursor-pointer ' size={25} />
-                                : <MdAddToPhotos onClick={handleAddCategory} className=' cursor-pointer ' size={25} />}
+              <DragDropContext onDragEnd={handleDragEnd}>
+              <Droppable droppableId="droppable">
+                      {(provided) => (
+                          <div {...provided.droppableProps}
+                               ref={provided.innerRef}
+                              className='bg-slate-50 min-h-[220px] my-4'>
+                              <h4 className='text-md font-serif mx-10'>Categories</h4>
+                              <div className='flex flex-col mx-10 my-1'>
+                                  <label htmlFor="cat1" className='flex items-center'>
+                                      <input type="text" value={category} onChange={(e) => (setCategory(e.target.value))}
+                                          className='bg-white md:w-[30%] w-full  border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' name="cat1" id="" placeholder={`Enter Category`} />
+                                      {isActive ? <MdFileDownloadDone onClick={handleUpdateCategory} className=' cursor-pointer ' size={25} />
+                                          : <MdAddToPhotos onClick={handleAddCategory} className=' cursor-pointer ' size={25} />}
                             
-                </label>
+                                  </label>
                 
-                    </div> { noteCategory.map((cate) =>
-                    (<div key={cate.id} className='mx-11 my-2 flex items-center justify-between rounded px-2 py-1 border-[1px] border-gray-900  w-[20%]'>
-                        <h4 className='mr-1 text-xl font-serif'>{cate.category}</h4>
-                        <span className='ml-1 flex items-center cursor-pointer'>
-                            <FaPen onClick={() => { handleEditCategory(cate),setIsActive(true)}} className='mx-1' />
-                            <RiDeleteBinLine onClick={() => { deleteCategory(cate.id) }} size={25} className='mx-1' />
-                        </span></div>))}
-                </div>
+                              </div> {noteCategory.map((cate, index) =>
+                              (<Draggable key={cate.id} draggableId={cate.id} index={index}>
+                                  {(provided) => (
+                                      <div ref={provided.innerRef} 
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                          className='mx-11 my-2 flex items-center justify-between rounded px-2 py-1 border-[1px] border-gray-900  w-[20%]'>
+                                      <h4 className='mr-1 text-xl font-serif'>{cate.category}</h4>
+                                      <span className='ml-1 flex items-center cursor-pointer'>
+                                      <FaPen onClick={() => { handleEditCategory(cate), setIsActive(true) }} className='mx-1' />
+                                      <RiDeleteBinLine onClick={() => { deleteCategory(cate.id) }} size={25} className='mx-1' />
+                                      </span></div>)}
+                              </Draggable>
+                              ))}
+                          </div>
+                      )}
+                  </Droppable>
             </DragDropContext>    
           <div className='flex md:flex-row flex-col my-4'>
               <div className=''>
@@ -162,7 +182,7 @@ const QuestionCat1 = () => {
                 <RiDeleteBin5Line className='my-2 cursor-pointer ' size={25} />
             </div>
     </div>
-  )
-}
+  );
+};
 
-export default QuestionCat1
+export default QuestionCat1;

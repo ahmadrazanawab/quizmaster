@@ -58,8 +58,38 @@ const contextProvider = ({ children }) => {
 
     //End Answer Note crud function
 
+    // Add Category Drag Item
+    const handleDragEnd = (result) => {
+        const { source, destination } = result;
+    
+        if (!destination) return; 
+    
+        const reorderedItems = Array.from(noteCategory);
+        const [removed] = reorderedItems.splice(source.index, 1);
+        reorderedItems.splice(destination.index, 0, removed);
+    
+        setNoteCategory(reorderedItems);
+    };
+    
+    // End Category Drag Item
+
+    // Add Answer Item Drag Item
+    const handleDragEndAns = (result) => {
+        const { source, destination } = result;
+    
+        if (!destination) return; 
+    
+        const reorderedItems = Array.from(noteAnswer);
+        const [removed] = reorderedItems.splice(source.index, 1);
+        reorderedItems.splice(destination.index, 0, removed);
+    
+        setNoteAnswer(reorderedItems);
+    };
+    
+    // End Answer Item Drag Item
+
   return (
-    <Context.Provider value={{noteCategory,updateCategory,addCategory,deleteCategory,noteAnswer,addAnswer,updateAnswerNote,deleteAnswer}}>
+    <Context.Provider value={{noteCategory,updateCategory,addCategory,deleteCategory,noteAnswer,addAnswer,updateAnswerNote,deleteAnswer,handleDragEnd,handleDragEndAns}}>
       {children}
     </Context.Provider>
   )
