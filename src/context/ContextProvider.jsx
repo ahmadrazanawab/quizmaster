@@ -5,7 +5,8 @@ const contextProvider = ({ children }) => {
     const [noteCategory, setNoteCategory] = useState([]);
     const [noteAnswer, setNoteAnswer] = useState([]);
 
-    const host = "http://localhost:8000";
+    // const host = "http://localhost:8000";
+    const host = "https://ahmad-raza-quizmaster.onrender.com";
 
     // get all category
     const getallcategory = async () => {
