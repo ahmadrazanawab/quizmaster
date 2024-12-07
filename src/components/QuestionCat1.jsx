@@ -10,7 +10,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MdAddToPhotos } from "react-icons/md";
 import { MdFileDownloadDone } from "react-icons/md";
 import { BsQuestionCircle } from "react-icons/bs";
-import video  from "../assets/custom-video.mp4";
+import video from "../assets/page1Video.mp4";
 
 const QuestionCat1 = () => {
   const [isActive, setIsActive] = useState(false);
@@ -20,6 +20,7 @@ const QuestionCat1 = () => {
   const [answerItem, setAnswerItem] = useState("");
   const [ansId, setAnsId] = useState("");
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
     
 
   const {
@@ -45,7 +46,7 @@ const QuestionCat1 = () => {
     
   // Start Category Question Crud
   const handleAddCategory = (e) => {
-    // e.preventDefault();
+    // e.preventDefault(); 
     if (category === "") {
       alert("Your category is blank. You cannot be add a category");
     } else {
@@ -93,23 +94,36 @@ const QuestionCat1 = () => {
     setIsActives(false);
     setAnswerItem("");
   };
-  //  End Category Question Crud
+    //  End Category Question Crud
+    
+
+    // selecte the photo
+    const handlePhotoSelection = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            setSelectedPhoto(reader.result); 
+          };
+          reader.readAsDataURL(file);
+        }
+      };
 
     return (
       <>
     <div className='flex md:mx-20 mx-8 border-l-8 border-sky-400'>
     <div className='shadow-sm w-[100%] bg-slate-50 pt-24 bt-10'>
           <div className='shadow-sm border-b-2 border-gray-600 flex mx-10 justify-between py-4'>
-              <p className='text-xl cursor-pointer mx-4'>Untitle Quiz</p>
-              <div className='flex md:flex-row flex-col'>
-                  <button className='bg-sky-500 cursor-pointer border-[1px] text-white border-sky-800 outline-none px-2 py-1 hover:bg-sky-700 rounded mx-2 my-1 md:my-0 '>Save</button>
-                  <button className='text-sky-500 cursor-pointer  border-[1px] border-sky-800 outline-none px-2 py-1 hover:bg-sky-500 hover:text-white rounded mx-2 my-1 md:my-0'>Save & Proceed</button>
+              <p className='text-xl md:visible hidden cursor-pointer mx-4'>Untitle Quiz</p>
+              <div className='flex justify-between'>
+                  <button className='bg-sky-500 cursor-pointer border-[1px] text-white border-sky-800 outline-none px-2 py-1 hover:bg-sky-700 rounded  mx-2 my-1 md:my-0 '>Save</button>
+                  <button className='text-sky-500 cursor-pointer text-sm md:text-md  border-[1px] md:w-[200px] w-[100px] border-sky-800 outline-none px-2 py-1 hover:bg-sky-500 hover:text-white rounded mx-2 my-1 md:my-0'>Save & Proceed</button>
               </div> 
           </div>
           <div className='mx-10 my-4'>
               <div>
                   <label htmlFor="question" className='mx-2'>Question 1</label>
-                            <div className='flex items-center'>
+                            <div className='flex md:flex-row flex-row items-center flex-wrap'>
                             {isVideoOpen && (
                             <div
                               className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
@@ -121,7 +135,7 @@ const QuestionCat1 = () => {
                               >
                                 <video
                                   controls
-                                  className="rounded w-[400px] h-[250px]"
+                                  className="rounded md:w-[400px] md:h-[250px] w-[250px] h-[200px]"
                                   src={video} 
                                 />
                                 <button
@@ -132,12 +146,24 @@ const QuestionCat1 = () => {
                                 </button>
                               </div>
                             </div>
-      )}
-                    <input type="text" className='bg-white w-[60%] border-[1px] border-[#333] rounded outline-none px-2 py-1 mx-2 my-2' id='question' name='question1' placeholder='Description (Optional)' />
-                    <label htmlFor="img"> <input type="file" className='hidden' name="txt,png,pdf,jpn" id="img" /> <CiImageOn className='cursor-pointer' id='img' size={25}/></label><div className='flex'><span className='flex ml-10'><p className='mx-1' id='p1'>Categorize</p><BsQuestionCircle  onClick={() => setIsVideoOpen(true)} className='text-green-600 mx-1 cursor-pointer' size={20} /></span></div>
-                  </div> 
-              </div>
-            </div>
+                 )}
+                    <input type="text" className='bg-white md:w-[60%] w-[200px] border-[1px] border-[#333] rounded outline-none px-2 py-1 mx-2 my-2' id='question' name='question1' placeholder='Description (Optional)' />
+                                <label htmlFor="photo-upload" className='flex'>
+                                    <input type="file" onChange={handlePhotoSelection} id="photo-upload" accept="image/*" className='hidden' name="txt,png,pdf,jpn" />
+                                    <CiImageOn className='cursor-pointer' id='photo-upload' size={25} />
+                                </label>
+                                <div className='flex md:flex-row flex-col'>
+                                    <span className='flex sm:ml-10 ml-2'>
+                                        <p className='mx-1' id='p1'>Categorize</p>
+                                        <BsQuestionCircle onClick={() => setIsVideoOpen(true)} className='text-green-600 mx-1 cursor-pointer' size={20} />
+                                    </span>
+                                </div>
+                </div>
+                 { selectedPhoto &&           
+                    <div className='flex py-1 rounded px-2 mx-4'><img src={selectedPhoto} className='shadow-md rounded w-[150px] h-[100px]' alt="selected" /></div>            
+                  }
+        </div>
+        </div>
                     
                     {/* Start  Category Section */}
               <DragDropContext onDragEnd={handleDragEnd}>
@@ -156,13 +182,13 @@ const QuestionCat1 = () => {
                             
                                   </label>
                 
-                              </div> {noteCategory && noteCategory.map((cate) =>
-                              (<Draggable key={cate._id} draggableId={cate._id}>
+                              </div> {noteCategory && noteCategory.map((cate,index) =>
+                              (<Draggable key={cate._id} draggableId={cate._id} index={index}>
                                   {(provided) => (
                                       <div ref={provided.innerRef} 
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
-                                          className='mx-11 my-2 flex items-center justify-between rounded px-2 py-1 border-[1px] border-gray-900  w-[20%]'>
+                                          className='mx-11 my-2 flex items-center justify-between rounded px-2 py-1 border-[1px] border-gray-900 w-[80%] xl:max-w-[20%]'>
                                       <h4 className='mr-1 text-xl font-serif'>{cate.category}</h4>
                                       <span className='ml-1 flex items-center cursor-pointer'>
                                       <FaPen onClick={() => { handleEditCategory(cate), setIsActive(true) }} className='mx-1' />

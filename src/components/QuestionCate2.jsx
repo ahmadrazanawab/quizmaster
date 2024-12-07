@@ -5,7 +5,7 @@ import { MdAdd } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { BsQuestionCircle } from "react-icons/bs";
-import video  from "../assets/custom-video.mp4";
+import video from "../assets/page1Video.mp4";
 
 const QuestionCate2 = () => {
   const [inputText, setInputText] = useState('');

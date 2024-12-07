@@ -24,13 +24,6 @@ const contextProvider = ({ children }) => {
 
     // add Category
     const addCategory =async (category) => {
-        // const addCate = {
-        //     id: uuidv4(),
-        //     category,
-        // }
-
-        // setNoteCategory([...noteCategory, addCate]);
-        // console.log(addCate);
             const response = await fetch(`${host}/api/c1/category`, {
                 method: "POST",
                 headers: {
@@ -41,10 +34,6 @@ const contextProvider = ({ children }) => {
             const cateAdd = await response.json();
             // setNoteCategory([...noteCategory, cateAdd]);
             setNoteCategory((prevCategory) => [...prevCategory, cateAdd]);
-            console.log(cateAdd);
-            // console.log(noteCategory);
-         
-        
     }
    
 
