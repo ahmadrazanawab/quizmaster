@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Store the Question and Answer ",
+  "main": "srcs/index.js",
+  "scripts": {
+    "start": "srcs/index.js"
+  },
+  "author": "Ahmad Raza",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "chalk": "^5.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "express-validator": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^6.10.0",
+    "nodemon": "^3.1.7"
+  }
+}

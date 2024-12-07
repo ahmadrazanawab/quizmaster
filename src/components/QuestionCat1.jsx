@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CiImageOn } from "react-icons/ci";
 import { MdAdd } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
@@ -9,6 +9,8 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MdAddToPhotos } from "react-icons/md";
 import { MdFileDownloadDone } from "react-icons/md";
+import { BsQuestionCircle } from "react-icons/bs";
+import video  from "../assets/custom-video.mp4";
 
 const QuestionCat1 = () => {
   const [isActive, setIsActive] = useState(false);
@@ -17,12 +19,17 @@ const QuestionCat1 = () => {
   const [cateId, setCateId] = useState("");
   const [answerItem, setAnswerItem] = useState("");
   const [ansId, setAnsId] = useState("");
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+    
+
   const {
     noteCategory,
+    getallcategory,
     addCategory,
     updateCategory,
     deleteCategory,
-    noteAnswer,
+      noteAnswer,
+      getallanswer,
     addAnswer,
     updateAnswerNote,
     deleteAnswer,
@@ -30,20 +37,25 @@ const QuestionCat1 = () => {
     handleDragEndAns,
   } = useContext(context);
 
+    useEffect(() => {
+        getallcategory();
+        getallanswer();
+    }, []);
+    
+    
   // Start Category Question Crud
   const handleAddCategory = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (category === "") {
       alert("Your category is blank. You cannot be add a category");
     } else {
       addCategory(category);
-      // alert('Your category is added');
     }
     setCategory("");
   };
 
   const handleEditCategory = (cate) => {
-    setCateId(cate.id);
+    setCateId(cate._id);
     setCategory(cate.category);
   };
 
@@ -53,12 +65,14 @@ const QuestionCat1 = () => {
     setCateId(null);
     setIsActive(false);
     setCategory("");
-  };
+    };
+    
+
   //  End Category Question Crud
 
   // Start Answer Item Crud
   const handleAddAsnwer = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (answerItem === "") {
       alert("Your answer is blank. You cannot be add an answer");
     } else {
@@ -68,7 +82,7 @@ const QuestionCat1 = () => {
   };
 
   const handleEditAnswer = (ans) => {
-    setAnsId(ans.id);
+    setAnsId(ans._id);
     setAnswerItem(ans.answer);
   };
 
@@ -95,9 +109,32 @@ const QuestionCat1 = () => {
           <div className='mx-10 my-4'>
               <div>
                   <label htmlFor="question" className='mx-2'>Question 1</label>
-                  <div className='flex items-center'>
-                  <input type="text" className='bg-white w-[60%] border-[1px] border-[#333] rounded outline-none px-2 py-1 mx-2 my-2' id='question' name='question1' placeholder='Description (Optional)' />
-                    <label htmlFor="img"> <input type="file" className='hidden' name="txt,png,pdf,jpn" id="img" /> <CiImageOn className='cursor-pointer ' id='img' size={25}/></label>
+                            <div className='flex items-center'>
+                            {isVideoOpen && (
+                            <div
+                              className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+                              onClick={() => setIsVideoOpen(false)}
+                            >
+                              <div
+                                className="relative bg-white rounded shadow-lg"
+                                onClick={(e) => e.stopPropagation()} 
+                              >
+                                <video
+                                  controls
+                                  className="rounded w-[400px] h-[250px]"
+                                  src={video} 
+                                />
+                                <button
+                                  onClick={() => setIsVideoOpen(false)}
+                                  className="absolute top-0 right-0 m-2 text-white bg-red-500 rounded-full hover:bg-red-600 px-3 py-1"
+                                >
+                                  X
+                                </button>
+                              </div>
+                            </div>
+      )}
+                    <input type="text" className='bg-white w-[60%] border-[1px] border-[#333] rounded outline-none px-2 py-1 mx-2 my-2' id='question' name='question1' placeholder='Description (Optional)' />
+                    <label htmlFor="img"> <input type="file" className='hidden' name="txt,png,pdf,jpn" id="img" /> <CiImageOn className='cursor-pointer' id='img' size={25}/></label><div className='flex'><span className='flex ml-10'><p className='mx-1' id='p1'>Categorize</p><BsQuestionCircle  onClick={() => setIsVideoOpen(true)} className='text-green-600 mx-1 cursor-pointer' size={20} /></span></div>
                   </div> 
               </div>
             </div>
@@ -119,8 +156,8 @@ const QuestionCat1 = () => {
                             
                                   </label>
                 
-                              </div> {noteCategory.map((cate, index) =>
-                              (<Draggable key={cate.id} draggableId={cate.id} index={index}>
+                              </div> {noteCategory && noteCategory.map((cate) =>
+                              (<Draggable key={cate._id} draggableId={cate._id}>
                                   {(provided) => (
                                       <div ref={provided.innerRef} 
                                         {...provided.draggableProps}
@@ -129,7 +166,7 @@ const QuestionCat1 = () => {
                                       <h4 className='mr-1 text-xl font-serif'>{cate.category}</h4>
                                       <span className='ml-1 flex items-center cursor-pointer'>
                                       <FaPen onClick={() => { handleEditCategory(cate), setIsActive(true) }} className='mx-1' />
-                                      <RiDeleteBinLine onClick={() => { deleteCategory(cate.id) }} size={25} className='mx-1' />
+                                      <RiDeleteBinLine onClick={() => { deleteCategory(cate._id) }} size={25} className='mx-1' />
                                       </span></div>)}
                               </Draggable>
                               ))}
@@ -155,8 +192,8 @@ const QuestionCat1 = () => {
                                 : <MdAddToPhotos onClick={handleAddAsnwer} className=' cursor-pointer ' size={25} />}
                           </label>
                 
-                       { noteAnswer.map((ans,index) =>
-                    (<Draggable key={ans.id} draggableId={ans.id} index={index}>
+                       {noteAnswer && noteAnswer.map((ans,index) =>
+                    (<Draggable key={ans._id} draggableId={ans._id} index={index}>
                            {(provided) => (
                             <div ref={provided.innerRef} 
                             {...provided.draggableProps}
@@ -165,7 +202,7 @@ const QuestionCat1 = () => {
                             ><h4 className='mr-1 my-1 font-serif'>{ans.answer}</h4>
                         <span className='ml-1 flex items-center cursor-pointer'>
                                <FaPen onClick={() => { handleEditAnswer(ans), setIsActives(true) }} className={`mx-1 my-1`} />
-                               <RiDeleteBinLine onClick={() => { deleteAnswer(ans.id) }} size={25} className={`mx-1 my-1`} />
+                               <RiDeleteBinLine onClick={() => { deleteAnswer(ans._id) }} size={25} className={`mx-1 my-1`} />
                            </span>
                             </div>)}
                        </Draggable>))}  
@@ -183,15 +220,15 @@ const QuestionCat1 = () => {
                    <div className='flex flex-col mx-10'>
                         <select name="cate"  className='text-gry-900 cursor-pointer w-[200px] border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' id="cate">
                                 {
-                                   noteCategory.map((cate)=>(
+                                  noteCategory && noteCategory.map((cate)=>(
                                         <option key={cate.category} value={cate.category}>{cate.category}</option>
                                     ))
                                 }
                         </select>     
                             <select name="cate" className='text-gray-900 cursor-pointer w-[200px] border-[1px] border-[#333] rounded outline-none px-2 py-1 my-2 mx-1' id="cate">
                                 {
-                                    noteCategory.map((cate)=>(
-                                        <option  className='' key={cate.id} value={cate.id}>{cate.category}</option>
+                                   noteCategory && noteCategory.map((cate)=>(
+                                        <option  className='' key={cate._id} value={cate._id}>{cate.category}</option>
                                     ))
                                 }
                             </select>     

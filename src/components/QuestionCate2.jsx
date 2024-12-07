@@ -5,11 +5,13 @@ import { MdAdd } from "react-icons/md";
 import { FaRegCopy } from "react-icons/fa";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { BsQuestionCircle } from "react-icons/bs";
+import video  from "../assets/custom-video.mp4";
 
 const QuestionCate2 = () => {
   const [inputText, setInputText] = useState('');
   const [selectedWord, setSelectedWord] = useState('');
-  const [fields, setFields] = useState([{ id: 1, value: '' }]); // Initial set of input fields and checkboxes
+  const [fields, setFields] = useState([{ id: 1, value: '' }]);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
 
   // Function to get the selected text
   const getSelectedText = () => {
@@ -50,7 +52,30 @@ const QuestionCate2 = () => {
                        </div>
                         <label htmlFor="img"> <input type="file" className='hidden' name="txt,png,pdf,jpn" id="img" /> <CiImageOn className='cursor-pointer ' id='img' size={25} /></label>
                           <div className='md:ml-10 mx-1 flex md:flex-col flex-row'>
-                              <label htmlFor="cloz" className='flex items-center'>Categorize <span className='mx-2'><BsQuestionCircle className='text-green-600 cursor-pointer' size={20} /></span></label> 
+                          {isVideoOpen && (
+                                <div
+                                  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+                                  onClick={() => setIsVideoOpen(false)}
+                                >
+                                  <div
+                                    className="relative bg-white rounded shadow-lg"
+                                    onClick={(e) => e.stopPropagation()}
+                                  >
+                                    <video
+                                      controls
+                                      className="rounded w-[400px] h-[250px]"
+                                      src={video} 
+                                    />
+                                    <button
+                                      onClick={() => setIsVideoOpen(false)}
+                                      className="absolute top-0 right-0 m-2 text-white bg-red-500 rounded-full hover:bg-red-600 px-3 py-1"
+                                    >
+                                      X
+                                    </button>
+                                  </div>
+                                </div>
+                                )}
+                              <label htmlFor="cloz" className='flex items-center'>Categorize <span className='mx-2'><BsQuestionCircle onClick={() => setIsVideoOpen(true)} className='text-green-600 cursor-pointer' size={20} /></span></label> 
                               <label htmlFor="point" className='flex flex-col mt-4'><span className='text-sm'>Points</span><input type="text" className='shadow-sm outline-none w-28 h-10 rounded px-2 py-4 my-1' name="marks" id="point" /></label>
                         </div>
                       

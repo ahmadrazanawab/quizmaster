@@ -1,31 +1,81 @@
 import React, { useState } from 'react'
 import Context from './context'
-import { v4 as uuidv4 } from 'uuid';
+// import { v4 as uuidv4 } from 'uuid';
 const contextProvider = ({ children }) => {
     const [noteCategory, setNoteCategory] = useState([]);
     const [noteAnswer, setNoteAnswer] = useState([]);
 
-    //start category crud function
-    // add Category
-    const addCategory = (category) => {
-        const addCate = {
-            id: uuidv4(),
-            category,
-        }
-        setNoteCategory([...noteCategory, addCate]);
-        console.log(addCate);
+    const host = "http://localhost:8000";
+
+    // get all category
+    const getallcategory = async () => {
+        const response = await fetch(`${host}/api/c1/getallcategory`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+          }  
+        })
+        const json = await response.json();
+        setNoteCategory(json);
+        console.log(json);
     }
+    
+    //start category crud function
+
+    // add Category
+    const addCategory =async (category) => {
+        // const addCate = {
+        //     id: uuidv4(),
+        //     category,
+        // }
+
+        // setNoteCategory([...noteCategory, addCate]);
+        // console.log(addCate);
+            const response = await fetch(`${host}/api/c1/category`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ category })
+            });
+            const cateAdd = await response.json();
+            // setNoteCategory([...noteCategory, cateAdd]);
+            setNoteCategory((prevCategory) => [...prevCategory, cateAdd]);
+            console.log(cateAdd);
+            // console.log(noteCategory);
+         
+        
+    }
+   
+
 
     // delete category
-    const deleteCategory = (id) => {
-        const deleteCategory = noteCategory.filter((cate) => {return cate.id !== id });
-        setNoteCategory(deleteCategory);
-        console.log(deleteCategory);
+    const deleteCategory =async (id) => {
+        const response = await fetch(`${host}/api/c1/deletecategory/${id}`,{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        const newCategory = noteCategory.filter((cate) => { return cate._id !== id });
+        setNoteCategory(newCategory);
+        // const deleteCategory = noteCategory.filter((cate) => { return cate._id !== id });
+        // setNoteCategory(deleteCategory);
+        // console.log(deleteCategory);
     }
 
     // update category
-    const updateCategory = (id,category) => {
-        setNoteCategory(noteCategory.map(cate => (cate.id === id ? { ...cate, category } : cate)))
+    const updateCategory = async (id,category) => {
+        const response = await fetch(`${host}/api/c1/updatecategory/${id}`,{
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body:JSON.stringify({category})
+        })
+        const cate = await response.json();
+        console.log(cate);
+        setNoteCategory(noteCategory.map(cate => (cate._id === id ? { ...cate, category } : cate)))
     }
 
     // End category crud function
@@ -34,26 +84,71 @@ const contextProvider = ({ children }) => {
 
     //start Answer Note crud function
 
+    // get all answer
+    const getallanswer = async () => {
+        const response = await fetch(`${host}/api/a1/getallanswer`,{
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+          }  
+        })
+        const json = await response.json();
+        setNoteAnswer(json);
+        console.log(json);
+    }
+
     // add Answer note
-    const addAnswer = (answer) => {
-        const addAns = {
-            id: uuidv4(),
-            answer,
-        }
-        setNoteAnswer([...noteAnswer, addAns ]);
-        console.log(addAns);
+    const addAnswer = async(answer) => {
+        // const addAns = {
+        //     id: uuidv4(),
+        //     answer,
+        // }
+        // setNoteAnswer([...noteAnswer, addAns ]);
+        // console.log(addAns);
+        const response = await fetch(`${host}/api/a1/createanswer`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ answer })
+        });
+
+            const addAns = await response.json();
+            // setNoteCategory([...noteCategory, cateAdd]);
+            setNoteAnswer((prevCategory) => [...prevCategory, addAns]);
+            console.log(addAns);
     }
 
     // delete answer note
-    const deleteAnswer = (id) => {
-        const deleteAnswer = noteAnswer.filter((ans) => {return ans.id !== id });
+    const deleteAnswer = async (id) => {
+        // const deleteAnswer = noteAnswer.filter((ans) => {return ans.id !== id });
+        // setNoteAnswer(deleteAnswer);
+        // console.log(deleteAnswer);
+
+        const response = await fetch(`${host}/api/a1/deleteanswer/${id}`,{
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+
+        const deleteAnswer = noteAnswer.filter((ans) => {return ans._id !== id });
         setNoteAnswer(deleteAnswer);
         console.log(deleteAnswer);
     }
 
     // update answer note
-    const updateAnswerNote = (id,answer) => {
-        setNoteAnswer(noteAnswer.map(ans => (ans.id === id ? { ...ans, answer } : ans)))
+    const updateAnswerNote =async (id,answer) => {
+        const response = await fetch(`${host}/api/a1/updateanswer/${id}`,{
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body:JSON.stringify({answer})
+        })
+        const ans = await response.json();
+        console.log(ans);
+        setNoteAnswer(noteAnswer.map(ans => (ans._id === id ? { ...ans, answer } : ans)))
     }
 
     //End Answer Note crud function
@@ -89,7 +184,7 @@ const contextProvider = ({ children }) => {
     // End Answer Item Drag Item
 
   return (
-    <Context.Provider value={{noteCategory,updateCategory,addCategory,deleteCategory,noteAnswer,addAnswer,updateAnswerNote,deleteAnswer,handleDragEnd,handleDragEndAns}}>
+    <Context.Provider value={{noteCategory,getallcategory,updateCategory,addCategory,deleteCategory,noteAnswer,getallanswer,addAnswer,updateAnswerNote,deleteAnswer,handleDragEnd,handleDragEndAns}}>
       {children}
     </Context.Provider>
   )
