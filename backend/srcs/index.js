@@ -16,7 +16,7 @@ dotenv.config({
 
 app.use(cors());
 app.get('/',(req, res) => {
-    res.send("hello worlds");
+    res.send("hello worlds 2");
 })
 
 app.use('/api/c1/', require('./routes/Category.route'));
