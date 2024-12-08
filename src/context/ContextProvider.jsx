@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import Context from './context'
-// import { v4 as uuidv4 } from 'uuid';
 const contextProvider = ({ children }) => {
     const [noteCategory, setNoteCategory] = useState([]);
     const [noteAnswer, setNoteAnswer] = useState([]);
 
-    // const host = "http://localhost:8000";
-    const host = "https://ahmad-raza-quizmaster.onrender.com";
-
+    const host = "http://localhost:8000";
+    // const host = "https://ahmad-raza-quizmaster.onrender.com"
+  
     // get all category
     const getallcategory = async () => {
         const response = await fetch(`${host}/api/c1/getallcategory`,{
@@ -18,7 +17,7 @@ const contextProvider = ({ children }) => {
         })
         const json = await response.json();
         setNoteCategory(json);
-        console.log(json);
+        // console.log(json);
     }
     
     //start category crud function
@@ -64,7 +63,7 @@ const contextProvider = ({ children }) => {
             body:JSON.stringify({category})
         })
         const cate = await response.json();
-        console.log(cate);
+        // console.log(cate);
         setNoteCategory(noteCategory.map(cate => (cate._id === id ? { ...cate, category } : cate)))
     }
 
@@ -84,7 +83,7 @@ const contextProvider = ({ children }) => {
         })
         const json = await response.json();
         setNoteAnswer(json);
-        console.log(json);
+        // console.log(json);
     }
 
     // add Answer note
@@ -106,7 +105,7 @@ const contextProvider = ({ children }) => {
             const addAns = await response.json();
             // setNoteCategory([...noteCategory, cateAdd]);
             setNoteAnswer((prevCategory) => [...prevCategory, addAns]);
-            console.log(addAns);
+            // console.log(addAns);
     }
 
     // delete answer note
@@ -124,7 +123,7 @@ const contextProvider = ({ children }) => {
 
         const deleteAnswer = noteAnswer.filter((ans) => {return ans._id !== id });
         setNoteAnswer(deleteAnswer);
-        console.log(deleteAnswer);
+        // console.log(deleteAnswer);
     }
 
     // update answer note
@@ -137,7 +136,7 @@ const contextProvider = ({ children }) => {
             body:JSON.stringify({answer})
         })
         const ans = await response.json();
-        console.log(ans);
+        // console.log(ans);
         setNoteAnswer(noteAnswer.map(ans => (ans._id === id ? { ...ans, answer } : ans)))
     }
 

@@ -1,3 +1,4 @@
+const dotenv = require('dotenv');
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -9,10 +10,14 @@ connetedToMongodb();
 app.use(bodyParser.json());
 app.use(express.json());
 
-
+dotenv.config({
+    path: './.env'
+})
 
 app.use(cors());
-
+app.get('/',(req, res) => {
+    res.send("hello worlds");
+})
 
 app.use('/api/c1/', require('./routes/Category.route'));
 app.use('/api/a1/', require('./routes/Answer.route'));

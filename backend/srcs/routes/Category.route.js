@@ -6,6 +6,7 @@ const Category1 = require('../model/Category.model');
 
 
 
+
 cate.post('/category', [
     body('category', 'Enter your Category').isLength({min:1}),
 ],async (req, res) => {
@@ -33,6 +34,7 @@ cate.post('/category', [
 // update Category
 cate.put('/updatecategory/:id', async (req, res) => {
     try {
+        let conn = await connetedToMongodb();
         const { category } = req.body;
         console.log(category);
       const updatedCategory = await Category.findByIdAndUpdate(

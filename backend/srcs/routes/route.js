@@ -1,7 +1,6 @@
 const express = require('express');
 const route = express.Router();
 const Queston1 = require('../model/questionCate.model');
-const Category = require('../model/Category.model');
 const { body, validationResult } = require('express-validator');
 
 
