@@ -3,8 +3,7 @@ import Navbar from './components/Navbar'
 import {createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Home from './components/Home'
 import About from './components/About'
-import ContextProvider from './context/contextProvider'
-import QuestionCat3 from './components/QuestionCat3'
+import ContextProvider from './context/ContextProvider'
 
 
 const App = () => {
@@ -16,10 +15,6 @@ const App = () => {
         {
             path: '/about',
             element:<><Navbar/><About/></>
-        },
-        {
-            path: '/cate3',
-            element:<><Navbar/><QuestionCat3/></>
         },
     ])
   return (

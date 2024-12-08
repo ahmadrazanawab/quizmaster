@@ -4,8 +4,8 @@ const contextProvider = ({ children }) => {
     const [noteCategory, setNoteCategory] = useState([]);
     const [noteAnswer, setNoteAnswer] = useState([]);
 
-    const host = "http://localhost:8000";
-    // const host = "https://ahmad-raza-quizmaster.onrender.com"
+    // const host = "http://localhost:8000";
+    const host = "https://ahmad-raza-quizmaster.onrender.com"
   
     // get all category
     const getallcategory = async () => {
@@ -88,12 +88,6 @@ const contextProvider = ({ children }) => {
 
     // add Answer note
     const addAnswer = async(answer) => {
-        // const addAns = {
-        //     id: uuidv4(),
-        //     answer,
-        // }
-        // setNoteAnswer([...noteAnswer, addAns ]);
-        // console.log(addAns);
         const response = await fetch(`${host}/api/a1/createanswer`, {
             method: "POST",
             headers: {

@@ -29,8 +29,8 @@ const QuestionCat1 = () => {
     addCategory,
     updateCategory,
     deleteCategory,
-      noteAnswer,
-      getallanswer,
+    noteAnswer,
+    getallanswer,
     addAnswer,
     updateAnswerNote,
     deleteAnswer,
@@ -46,7 +46,7 @@ const QuestionCat1 = () => {
     
   // Start Category Question Crud
   const handleAddCategory = (e) => {
-    // e.preventDefault(); 
+    e.preventDefault(); 
     if (category === "") {
       alert("Your category is blank. You cannot be add a category");
     } else {
@@ -61,7 +61,7 @@ const QuestionCat1 = () => {
   };
 
   const handleUpdateCategory = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     updateCategory(cateId, category);
     setCateId(null);
     setIsActive(false);
@@ -73,7 +73,7 @@ const QuestionCat1 = () => {
 
   // Start Answer Item Crud
   const handleAddAsnwer = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     if (answerItem === "") {
       alert("Your answer is blank. You cannot be add an answer");
     } else {
